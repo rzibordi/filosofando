@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#090b18" />
+  <title>Gerador Filosófico</title>
+  <meta name="author" content="Ricardo Zibordi" />
+  <style>
+    :root {
+      --bg-1: #080916;
+      --bg-2: #10152b;
+      --bg-3: #201b3c;
+      --card: rgba(255, 255, 255, 0.09);
+      --card-strong: rgba(255, 255, 255, 0.14);
+      --text: #f7f2ff;
+      --muted: rgba(247, 242, 255, 0.72);
+      --soft: rgba(247, 242, 255, 0.54);
+      --line: rgba(255, 255, 255, 0.14);
+      --accent: #bfa4ff;
+      --accent-2: #73e0ff;
+      --danger: #ff9b9b;
+      --ok: #b9f6d2;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --font: ui-serif, Georgia, "Times New Roman", serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg-1);
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--sans);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(115, 224, 255, 0.24), transparent 28%),
+        radial-gradient(circle at 90% 0%, rgba(191, 164, 255, 0.28), transparent 32%),
+        radial-gradient(circle at 40% 95%, rgba(255, 199, 125, 0.14), transparent 34%),
+        linear-gradient(145deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::before {
+      opacity: 0.42;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.88) 0 1px, transparent 1.4px),
+        radial-gradient(circle, rgba(255,255,255,0.48) 0 1px, transparent 1.5px);
+      background-size: 58px 58px, 91px 91px;
+      background-position: 8px 13px, 37px 48px;
+      animation: driftStars 34s linear infinite;
+    }
+
+    body::after {
+      background:
+        linear-gradient(180deg, transparent, rgba(8,9,22,0.24) 42%, rgba(8,9,22,0.78)),
+        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.22) 100%);
+    }
+
+    @keyframes driftStars {
+      from { transform: translateY(0); }
+      to { transform: translateY(-120px); }
+    }
+
+    .app {
+      width: min(100%, 780px);
+      margin: 0 auto;
+      padding: max(22px, env(safe-area-inset-top)) 16px max(26px, env(safe-area-inset-bottom));
+    }
+
+    header {
+      padding: 16px 2px 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      backdrop-filter: blur(16px);
+    }
+
+    .orb {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 18px var(--accent-2);
+    }
+
+    h1 {
+      margin: 22px 0 12px;
+      font-family: var(--font);
+      font-size: clamp(2.55rem, 12vw, 5.2rem);
+      line-height: 0.88;
+      letter-spacing: -0.07em;
+      text-wrap: balance;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.55;
+    }
+
+    .panel {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      backdrop-filter: blur(24px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .quote-stage {
+      position: relative;
+      min-height: 360px;
+      padding: 24px 19px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      isolation: isolate;
+    }
+
+    .quote-stage::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -108px;
+      top: -94px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 28%, rgba(255,255,255,0.76), transparent 5%),
+        radial-gradient(circle at 60% 62%, rgba(255,255,255,0.18), transparent 9%),
+        linear-gradient(135deg, rgba(191,164,255,0.35), rgba(115,224,255,0.08));
+      filter: blur(0.1px);
+      opacity: 0.76;
+      z-index: -1;
+    }
+
+    .quote-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.10), transparent 18%),
+        linear-gradient(140deg, transparent, rgba(255,255,255,0.04));
+      z-index: -1;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(0,0,0,0.13);
+      font-size: 0.75rem;
+    }
+
+    blockquote {
+      margin: 0;
+      font-family: var(--font);
+      font-size: clamp(1.72rem, 8vw, 3.8rem);
+      line-height: 1.06;
+      letter-spacing: -0.045em;
+      text-wrap: pretty;
+    }
+
+    .afterthought {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .question {
+      margin-top: 16px;
+      padding: 16px;
+      border-left: 2px solid var(--accent-2);
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.15);
+      color: rgba(247,242,255,0.86);
+      font-family: var(--font);
+      font-size: 1.12rem;
+      line-height: 1.45;
+    }
+
+    .signature {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+      color: var(--soft);
+      font-size: 0.84rem;
+    }
+
+    .counter {
+      color: var(--muted);
+    }
+
+    .controls {
+      padding: 16px;
+      border-top: 1px solid var(--line);
+      background: rgba(4, 5, 12, 0.22);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 13px 14px;
+      background: rgba(255, 255, 255, 0.09);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 74px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: rgba(115,224,255,0.62);
+      box-shadow: 0 0 0 4px rgba(115,224,255,0.11);
+    }
+
+    option {
+      background: #11152a;
+      color: #f7f2ff;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 18px;
+      min-height: 50px;
+      padding: 12px 14px;
+      color: var(--text);
+      font: inherit;
+      font-weight: 760;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .primary {
+      grid-column: 1 / -1;
+      min-height: 58px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.32), transparent 30%),
+        linear-gradient(135deg, #8268ff, #27c4ea);
+      box-shadow: 0 16px 34px rgba(39, 196, 234, 0.18);
+    }
+
+    .secondary {
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--muted);
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .mini {
+      margin: 12px 2px 0;
+      color: var(--soft);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .drawer {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.07);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 17px;
+      font-weight: 760;
+      color: var(--text);
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .details-content {
+      padding: 0 17px 17px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.94rem;
+    }
+
+    .favorites {
+      display: grid;
+      gap: 10px;
+    }
+
+    .favorite-card {
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 18px;
+      background: rgba(0,0,0,0.13);
+      color: rgba(247,242,255,0.86);
+      font-family: var(--font);
+      line-height: 1.35;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(120px);
+      width: calc(100% - 32px);
+      max-width: 520px;
+      padding: 13px 15px;
+      border-radius: 16px;
+      background: rgba(13, 17, 36, 0.92);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: 260ms ease;
+      backdrop-filter: blur(18px);
+      z-index: 10;
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .fade {
+      animation: fadeUp 420ms ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); filter: blur(7px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @media (min-width: 720px) {
+      .app {
+        padding-inline: 24px;
+      }
+
+      .quote-stage {
+        padding: 34px 32px 26px;
+        min-height: 430px;
+      }
+
+      .controls {
+        padding: 22px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      label.full {
+        grid-column: 1 / -1;
+      }
+
+      .buttons {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      }
+
+      .primary {
+        grid-column: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header>
+      <div class="eyebrow"><span class="orb"></span> Olá, que bom que está aqui. </div>
+      <h1>Frases para pensar antes de obedecer ao mundo.</h1>
+      <p class="lead">
+        Escolha um tema ou um contexto. O resto nasce do acaso, da linguagem e da inquietação.
+      </p>
+    </header>
+
+    <section class="panel" aria-live="polite">
+      <div class="quote-stage" id="quoteStage">
+        <div>
+          <div class="tags">
+            <span class="tag" id="themeTag">liberdade</span>
+            <span class="tag" id="toneTag">existencial</span>
+            <span class="tag" id="authorTag">Camus</span>
+          </div>
+
+          <blockquote id="quoteText">
+            A liberdade talvez comece quando você para de chamar de destino aquilo que foi apenas hábito repetido.
+          </blockquote>
+
+          <p class="afterthought" id="afterText">
+            Nem toda prisão tem grades. Algumas são feitas de expectativas elegantes, desculpas inteligentes e medos socialmente aceitos.
+          </p>
+
+          <div class="question" id="questionText">
+            O que você está defendendo porque acredita — e o que está defendendo apenas porque já investiu tempo demais nisso?
+          </div>
+        </div>
+
+        <div class="signature">
+          <span>Criado por Ricardo Zibordi</span>
+          <span class="counter" id="counterText">1</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="grid">
+          <label>
+            Tema
+            <select id="theme">
+              <option value="aleatorio">Aleatório</option>
+              <option value="liberdade">Liberdade</option>
+              <option value="medo">Medo</option>
+              <option value="curiosidade">Curiosidade</option>
+              <option value="proposito">Propósito</option>
+              <option value="tempo">Tempo</option>
+              <option value="solidao">Solidão</option>
+              <option value="amor">Amor</option>
+              <option value="mudanca">Mudança</option>
+              <option value="arte">Arte</option>
+              <option value="ciencia">Ciência</option>
+            </select>
+          </label>
+
+          <label>
+            Tom
+            <select id="tone">
+              <option value="aleatorio">Aleatório</option>
+              <option value="poetico">Poético</option>
+              <option value="ironico">Irônico</option>
+              <option value="existencial">Existencial</option>
+              <option value="estoico">Estoico</option>
+              <option value="cientifico">Científico</option>
+              <option value="brutal">Brutalmente honesto</option>
+            </select>
+          </label>
+
+          <label>
+            Referência
+            <select id="author">
+              <option value="aleatorio">Aleatória</option>
+              <option value="camus">Camus</option>
+              <option value="kant">Kant</option>
+              <option value="schopenhauer">Schopenhauer</option>
+              <option value="nietzsche">Nietzsche</option>
+              <option value="sartre">Sartre</option>
+              <option value="estoicos">Estoicos</option>
+              <option value="cientista">Cientista inquieto</option>
+              <option value="essencialista">Essencialista</option>
+            </select>
+          </label>
+
+          <label>
+            Intensidade
+            <select id="intensity">
+              <option value="suave">Suave</option>
+              <option value="media" selected>Média</option>
+              <option value="alta">Alta</option>
+            </select>
+          </label>
+
+          <label class="full">
+            Contexto pessoal opcional
+            <textarea id="context" maxlength="160" placeholder="Ex.: medo de mudar, fim de ciclo, amor, carreira, propósito..."></textarea>
+          </label>
+        </div>
+
+        <div class="buttons">
+          <button class="primary" id="generateBtn">Gerar pensamento</button>
+          <button class="secondary" id="copyBtn">Copiar</button>
+          <button class="secondary" id="shareBtn">Compartilhar</button>
+          <button class="ghost" id="saveBtn">Salvar</button>
+        </div>
+
+        <p class="mini">
+          Com “Tema” em aleatório, o contexto pessoal ajuda a escolher o caminho da frase.
+        </p>
+      </div>
+    </section>
+
+    <section class="drawer">
+      <details>
+        <summary>Favoritas salvas neste aparelho</summary>
+        <div class="details-content">
+          <div class="favorites" id="favoritesList"></div>
+          <div class="buttons">
+            <button class="ghost" id="clearFavoritesBtn">Limpar favoritas</button>
+            <button class="ghost" id="clearHistoryBtn">Limpar histórico de repetição</button>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Publicar</summary>
+        <div class="details-content">
+          Salve como <strong>index.html</strong> e publique no GitHub Pages, Netlify ou Vercel.
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const labels = {
+      temas: {
+        liberdade: "liberdade", medo: "medo", curiosidade: "curiosidade", proposito: "propósito",
+        tempo: "tempo", solidao: "solidão", amor: "amor", mudanca: "mudança", arte: "arte", ciencia: "ciência"
+      },
+      tons: {
+        poetico: "poético", ironico: "irônico", existencial: "existencial", estoico: "estoico",
+        cientifico: "científico", brutal: "brutalmente honesto"
+      },
+      autores: {
+        camus: "Camus", kant: "Kant", schopenhauer: "Schopenhauer", nietzsche: "Nietzsche",
+        sartre: "Sartre", estoicos: "Estoicos", cientista: "cientista inquieto", essencialista: "essencialista"
+      }
+    };
+
+    const data = {
+      themes: {
+        liberdade: {
+          nouns: ["a liberdade", "a autonomia", "a escolha", "a fuga da massa", "a lucidez", "a desobediência íntima", "a vida própria", "a coragem de decidir"],
+          tensions: ["o desejo de aprovação", "o medo de decepcionar", "a jaula confortável", "o costume disfarçado de destino", "a opinião pública", "a necessidade de pertencer", "a obediência automática"],
+          images: ["uma porta sem maçaneta", "uma estrada sem plateia", "um pássaro que desaprendeu a pedir licença", "uma chave escondida no bolso", "uma janela aberta no quarto errado"],
+          verbs: ["começa", "respira", "aparece", "se revela", "ganha corpo", "cobra seu preço", "amadurece"],
+          actions: ["dizer não sem transformar isso em espetáculo", "escolher sem pedir absolvição", "perder a necessidade de explicar tudo", "parar de negociar com o próprio medo", "sustentar uma escolha em silêncio"]
+        },
+        medo: {
+          nouns: ["o medo", "a cautela", "a ansiedade", "a ameaça imaginada", "a insegurança", "o susto antecipado", "a sombra mental"],
+          tensions: ["a realidade", "a fantasia", "a coragem", "o movimento", "a evidência", "a experiência", "o risco real"],
+          images: ["um alarme tocando em uma casa vazia", "um monstro educado pela imaginação", "uma tempestade dentro de um copo", "uma lanterna apontada para o próprio rosto", "um mapa desenhado por quem nunca saiu"],
+          verbs: ["cresce", "grita", "encolhe", "se alimenta", "se disfarça", "se dissolve", "negocia"],
+          actions: ["separar perigo de desconforto", "olhar para a evidência antes da fantasia", "dar um passo pequeno mas real", "perguntar que parte de você está tentando sobreviver", "nomear a ameaça sem decorar o terror"]
+        },
+        curiosidade: {
+          nouns: ["a curiosidade", "a pergunta", "o espanto", "a fome de entender", "a dúvida", "a investigação", "a atenção"],
+          tensions: ["a certeza confortável", "a preguiça intelectual", "o excesso de respostas prontas", "o medo de parecer ignorante", "a pressa", "o cinismo", "o dogma"],
+          images: ["uma lanterna em uma caverna antiga", "uma criança desmontando o relógio do mundo", "um mapa com bordas em branco", "um telescópio apontado para dentro", "uma pergunta debaixo da pele"],
+          verbs: ["abre", "desmonta", "atravessa", "desobedece", "ilumina", "provoca", "reorganiza"],
+          actions: ["trocar opinião por investigação", "fazer uma pergunta melhor", "permanecer diante do mistério sem preenchê-lo com pressa", "desmontar a primeira explicação", "aprender antes de julgar"]
+        },
+        proposito: {
+          nouns: ["o propósito", "o sentido", "a direção", "a obra íntima", "a coerência", "a construção de si", "a vocação silenciosa"],
+          tensions: ["a comparação", "a performance", "a pressa de parecer bem-sucedido", "o ruído social", "o excesso de metas", "a vida terceirizada", "a aprovação"],
+          images: ["uma bússola que só funciona no silêncio", "uma casa construída por dentro", "uma trilha que não precisa de aplauso", "um farol em manhã de neblina", "um machado sendo afiado antes da floresta"],
+          verbs: ["nasce", "se sustenta", "se perde", "reaparece", "se purifica", "resiste", "orienta"],
+          actions: ["fazer menos coisas com mais presença", "trocar velocidade por direção", "sair da vitrine e voltar para a oficina", "perguntar o que ainda valeria sem aplausos", "cuidar daquilo que dá estrutura ao seu dia"]
+        },
+        tempo: {
+          nouns: ["o tempo", "a memória", "a espera", "o agora", "a finitude", "o atraso", "a passagem das coisas"],
+          tensions: ["a pressa", "a nostalgia", "a ilusão de controle", "o arrependimento", "a comparação com calendários alheios", "o desperdício elegante", "o medo de chegar tarde"],
+          images: ["um relógio derretendo no bolso", "uma ampulheta com areia impaciente", "uma tarde que não cabe na agenda", "uma estrela que já morreu e ainda ilumina", "um rio fingindo ser linha reta"],
+          verbs: ["ensina", "apaga", "organiza", "desmente", "devora", "amadurece", "desloca"],
+          actions: ["parar de confundir urgência com importância", "voltar para o presente sem romantizá-lo", "aceitar que algumas respostas chegam depois da ansiedade", "investir no que ainda fará sentido amanhã", "proteger tempo como quem protege vida"]
+        },
+        solidao: {
+          nouns: ["a solidão", "o silêncio", "a presença consigo", "o intervalo", "a ilha interior", "a distância necessária", "a companhia de si"],
+          tensions: ["a carência", "o barulho dos outros", "a fuga de si", "a necessidade de validação", "o medo do vazio", "a multidão", "a dependência emocional"],
+          images: ["uma cadeira vazia diante do mar", "um quarto onde a verdade finalmente fala baixo", "uma ilha com biblioteca", "uma fogueira em noite sem plateia", "um espelho sem multidão atrás"],
+          verbs: ["cura", "assusta", "organiza", "revela", "separa", "fortalece", "escuta"],
+          actions: ["distinguir isolamento de recolhimento", "ficar consigo sem transformar isso em castigo", "ouvir o que o barulho escondia", "não confundir companhia com pertencimento", "criar um silêncio habitável"]
+        },
+        amor: {
+          nouns: ["o amor", "o encontro", "o vínculo", "a ternura", "a presença", "o cuidado", "a escolha afetiva"],
+          tensions: ["a posse", "a fantasia", "a expectativa", "o medo de perder", "o ego ferido", "a necessidade de controle", "a idealização"],
+          images: ["duas órbitas que não precisam colidir", "uma casa com portas abertas", "um bilhete guardado dentro do tempo", "um jardim que não floresce por cobrança", "uma chama que aquece sem incendiar a casa"],
+          verbs: ["amadurece", "exige", "descansa", "escolhe", "aprende", "sobrevive", "escuta"],
+          actions: ["cuidar sem aprisionar", "amar sem transformar o outro em função sua", "não pedir ao afeto que resolva a falta de sentido", "dar presença antes de prometer eternidade", "trocar fantasia por cuidado concreto"]
+        },
+        mudanca: {
+          nouns: ["a mudança", "a ruptura", "o começo", "a travessia", "o ciclo novo", "a despedida", "a reconstrução"],
+          tensions: ["o apego", "a versão antiga de si", "a segurança conhecida", "o medo do recomeço", "a memória", "a zona de conforto", "a culpa por crescer"],
+          images: ["uma ponte em construção durante a travessia", "uma pele antiga ficando pequena", "uma mala leve demais para levar o passado inteiro", "uma casa que precisa perder uma parede", "uma estrada surgindo depois do primeiro passo"],
+          verbs: ["dói", "liberta", "exige", "desorganiza", "ensina", "abre", "limpa"],
+          actions: ["não negociar com a versão que já acabou", "aceitar a bagunça inicial do crescimento", "despedir-se sem transformar tudo em tragédia", "trocar controle por movimento", "permitir que a vida atualize sua identidade"]
+        },
+        arte: {
+          nouns: ["a arte", "a imagem", "a beleza", "o símbolo", "a obra", "a criação", "o gesto estético"],
+          tensions: ["a utilidade imediata", "a pressa", "a literalidade", "o mercado", "a anestesia", "a rotina", "o excesso de explicações"],
+          images: ["uma janela aberta no concreto", "um quadro que olha de volta", "uma cor discutindo com a razão", "um espelho que não obedece ao rosto", "uma rachadura por onde entra sentido"],
+          verbs: ["revela", "incomoda", "salva", "desloca", "pergunta", "desarma", "amplia"],
+          actions: ["ver antes de explicar", "aceitar que nem tudo precisa servir para valer", "deixar uma imagem reorganizar o pensamento", "desconfiar do mundo quando ele exige utilidade de tudo", "usar beleza como forma de lucidez"]
+        },
+        ciencia: {
+          nouns: ["a ciência", "a hipótese", "a evidência", "o método", "a dúvida organizada", "a observação", "o experimento"],
+          tensions: ["a opinião apressada", "a crença confortável", "o viés", "a certeza teatral", "a vaidade intelectual", "a resposta fácil", "o achismo sofisticado"],
+          images: ["uma lanterna calibrada contra a escuridão", "um microscópio apontado para a arrogância", "uma equação tremendo diante da realidade", "uma bússola feita de erro corrigido", "um laboratório dentro da consciência"],
+          verbs: ["corrige", "duvida", "mede", "desconfia", "aproxima", "simplifica", "desmonta"],
+          actions: ["trocar certeza por método", "medir antes de opinar", "aceitar o erro como instrumento", "perguntar que evidência mudaria sua ideia", "não confundir explicação bonita com verdade"]
+        }
+      },
+
+      tones: {
+        poetico: {
+          openers: ["Talvez", "Às vezes", "No fundo", "Há dias em que", "Toda alma atenta sabe que", "Em alguma região silenciosa de nós,"],
+          bridges: ["não pede licença: apenas", "não surge como resposta; surge quando", "é menos uma conclusão e mais", "não se explica; ela", "vira paisagem quando"],
+          endings: ["e deixa o resto do mundo fazendo barulho do lado de fora.", "como uma estrela que ilumina sem precisar ser entendida.", "até que a vida pareça menos prisão e mais travessia.", "quando a alma finalmente para de correr para caber.", "e o silêncio deixa de parecer ausência."]
+        },
+        ironico: {
+          openers: ["Curiosamente", "Com alguma elegância trágica", "A humanidade adora fingir que", "É quase comovente perceber que", "Entre uma notificação e outra,"],
+          bridges: ["se disfarça de maturidade enquanto", "vende profundidade, mas", "faz pose de destino e", "promete clareza, porém", "se apresenta como virtude quando"],
+          endings: ["afinal, até nossas prisões gostam de boa decoração.", "porque nada é tão moderno quanto terceirizar a própria consciência.", "e ainda chama isso de equilíbrio emocional.", "mas pelo menos rende uma legenda inteligente.", "como se repetir padrões com vocabulário novo fosse evolução."]
+        },
+        existencial: {
+          openers: ["Ninguém vem salvar você da tarefa de perceber que", "A vida não entrega manual quando", "Em algum momento, fica claro que", "O absurdo começa a ficar suportável quando", "A existência fica mais honesta quando"],
+          bridges: ["não elimina o vazio; apenas", "não resolve a vida; ela", "não consola, mas", "não promete sentido, porém", "exige presença quando"],
+          endings: ["e isso já é mais liberdade do que muita gente suporta.", "porque viver também é escolher o peso que se aceita carregar.", "e talvez essa seja a forma adulta da esperança.", "sem garantias, sem plateia e sem desculpas elegantes.", "até que o sentido deixe de ser encontrado e passe a ser construído."]
+        },
+        estoico: {
+          openers: ["Comece pelo que está sob seu controle:", "Antes de reagir, observe:", "A serenidade aparece quando", "Não peça ao mundo que obedeça:", "Há força em perceber que"],
+          bridges: ["não depende da permissão dos outros; depende de", "se organiza quando você", "se torna possível quando", "se fortalece ao", "fica mais leve quando"],
+          endings: ["o resto é ruído tentando parecer destino.", "nenhuma tempestade interna precisa virar governo.", "você não precisa vencer o mundo para governar seus gestos.", "a disciplina é uma forma discreta de liberdade.", "a paz começa onde a vaidade perde o cargo."]
+        },
+        cientifico: {
+          openers: ["Se a consciência fosse um experimento,", "Observando friamente,", "A hipótese mais incômoda é que", "Do ponto de vista da evidência,", "Toda vida lúcida precisa testar se"],
+          bridges: ["não é essência fixa; é um sistema que", "parece verdade, mas talvez apenas", "muda de estado quando", "se comporta como variável dependente quando", "precisa ser medida antes de"],
+          endings: ["e repetir o erro sem análise não transforma ruído em padrão.", "porque até a alma precisa de revisão por pares.", "antes que o viés vire identidade.", "e nenhum modelo explica bem uma vida que não coleta dados sobre si.", "pois intuição sem teste é só poesia com excesso de confiança."]
+        },
+        brutal: {
+          openers: ["A parte desconfortável é simples:", "Dói admitir, mas", "Sem enfeite:", "A verdade sem maquiagem é que", "Você pode romantizar o quanto quiser, mas"],
+          bridges: ["não muda enquanto você", "continua vencendo porque você", "não é profundo; só", "não precisa de mais teoria; precisa de", "permanece igual sempre que"],
+          endings: ["e chamar isso de fase já não convence nem você.", "o preço da clareza é abandonar desculpas boas demais.", "maturidade é parar de proteger a própria mentira preferida.", "às vezes o problema não é falta de caminho, é apego ao labirinto.", "a vida não melhora só porque você descreveu bem o caos."]
+        }
+      },
+
+      authors: {
+        camus: {
+          flavor: ["contra o absurdo", "sem pedir ao Universo uma justificativa", "com uma dignidade que nasce apesar do vazio", "como quem empurra sua pedra e ainda observa o céu"],
+          questions: ["Que sentido você consegue construir sem exigir que o mundo concorde?", "Qual pedra você empurra todos os dias fingindo que ela não ensina nada?", "O que ainda merece sua presença, mesmo sem garantia de vitória?"]
+        },
+        kant: {
+          flavor: ["como se sua escolha pudesse virar lei", "sem confundir desejo com liberdade", "com a coragem de agir por princípio, não por conveniência", "sob a luz austera da responsabilidade"],
+          questions: ["Você aceitaria viver em um mundo onde todos agissem como você está prestes a agir?", "Sua escolha nasce da razão ou apenas de uma vontade bem vestida?", "Que princípio você está protegendo quando ninguém está olhando?"]
+        },
+        schopenhauer: {
+          flavor: ["atravessando o teatro da vontade", "sem obedecer a todo desejo que passa", "como quem desconfia da própria fome de querer", "percebendo que nem todo impulso merece trono"],
+          questions: ["Esse desejo é seu ou apenas a vontade usando sua voz?", "O que sobraria de você se a necessidade de querer descansasse por uma tarde?", "Você está escolhendo ou apenas sendo puxado por uma falta antiga?"]
+        },
+        nietzsche: {
+          flavor: ["como quem cria valor em vez de herdá-lo", "com martelo suficiente para testar ídolos", "sem pedir licença ao rebanho", "transformando queda em matéria-prima"],
+          questions: ["Que valor você teria coragem de criar se parasse de pedir autorização?", "Qual ídolo pessoal precisa ser quebrado para que você respire melhor?", "Você está vivendo ou apenas preservando uma versão domesticada de si?"]
+        },
+        sartre: {
+          flavor: ["sob o peso inevitável da escolha", "sem transformar os outros em desculpa", "com a angústia limpa de quem sabe que decide", "aceitando que fugir também é escolher"],
+          questions: ["Que escolha você está evitando ao chamar tudo de circunstância?", "Onde você está terceirizando sua liberdade?", "Quem você culpa para não encarar a autoria da própria vida?"]
+        },
+        estoicos: {
+          flavor: ["separando domínio interno e teatro externo", "com disciplina suficiente para não obedecer ao caos", "sem entregar a paz ao primeiro acontecimento", "como quem sabe que caráter é prática diária"],
+          questions: ["O que está sob seu controle agora, sem drama e sem fantasia?", "Que reação sua precisa perder o cargo de comandante?", "Qual hábito pequeno provaria hoje que você ainda governa algo?"]
+        },
+        cientista: {
+          flavor: ["tratando a própria vida como hipótese em teste", "com humildade diante dos dados", "sem transformar opinião em templo", "observando padrões antes de inventar explicações"],
+          questions: ["Que evidência mudaria sua opinião sobre si mesmo?", "Qual padrão você repete e ainda chama de acaso?", "Você está buscando verdade ou apenas confirmação elegante?"]
+        },
+        essencialista: {
+          flavor: ["retirando o excesso até sobrar direção", "com profundidade sem espetáculo", "fazendo menos para existir melhor", "trocando dispersão por presença"],
+          questions: ["O que você removeria da sua vida se não precisasse impressionar ninguém?", "Qual excesso está roubando profundidade?", "O que merece sua energia quando o barulho perde importância?"]
+        }
+      },
+
+      reflectionOpeners: [
+        "O pensamento fica mais honesto quando para de decorar suas próprias fugas.",
+        "Existe uma diferença enorme entre explicar a vida e participar dela.",
+        "O mundo oferece ruído com aparência de urgência; cabe a você proteger aquilo que não grita.",
+        "Nem toda clareza chega como iluminação. Algumas chegam como desistência de uma mentira bonita.",
+        "Uma vida mais consciente começa quando você deixa de chamar automatismo de personalidade.",
+        "Às vezes crescer é apenas parar de negociar com uma versão de si que já venceu tempo demais.",
+        "Profundidade não é falar difícil. É ter coragem de olhar onde as respostas simples não bastam.",
+        "A alma também precisa de manutenção preventiva: silêncio, método, arte, sono e menos espetáculo.",
+        "Nem tudo que dá certo faz bem. Nem tudo que dá medo é sinal de erro.",
+        "O difícil não é encontrar uma resposta. É suportar a pergunta sem anestesia."
+      ],
+
+      closers: [
+        "No fim, talvez maturidade seja isso: menos teatro, mais presença.",
+        "A vida raramente muda por revelação; muda por repetição consciente.",
+        "Quem observa melhor, obedece menos ao primeiro impulso.",
+        "O que você não examina vira roteiro. O que você examina pode virar escolha.",
+        "Algumas prisões caem quando você para de defendê-las com bons argumentos.",
+        "O mundo não precisa ficar simples para você viver com mais clareza.",
+        "Talvez o começo não seja coragem. Talvez seja só honestidade suficiente para dar o primeiro passo.",
+        "Há uma liberdade discreta em não transformar todo desconforto em tragédia.",
+        "Onde há atenção, há uma pequena chance de liberdade.",
+        "Não é pouco: às vezes entender um padrão já é começar a desmontá-lo."
+      ]
+    };
+
+    const templates = [
+      ({ t, tone, author }) => `${tone.openers} ${t.nouns} ${tone.bridges} ${t.verbs} quando você decide ${t.actions}, ${author.flavor}.`,
+      ({ t, tone, author }) => `${tone.openers} ${t.nouns} parece ${t.images}; ${tone.bridges} ${t.actions}, ${author.flavor}.`,
+      ({ t, tone, author }) => `${tone.openers} ${t.nouns} não vence ${t.tensions} por força bruta; vence quando você aprende a ${t.actions}, ${author.flavor}.`,
+      ({ t, tone, author }) => `${tone.openers} talvez ${t.nouns} seja apenas isso: ${t.actions}, mesmo quando ${t.tensions} tenta parecer mais sensato.`,
+      ({ t, tone, author }) => `${tone.openers} ${t.nouns} ${t.verbs} no instante em que ${t.tensions} perde o direito de decidir por você, ${author.flavor}.`,
+      ({ t, tone, author }) => `${tone.openers} ${t.nouns} não é ${t.images}; é o trabalho silencioso de ${t.actions}, ${author.flavor}.`,
+      ({ t, tone, author }) => `${tone.openers} ${t.tensions} sempre terá bons argumentos. Ainda assim, ${t.nouns} ${t.verbs} quando você escolhe ${t.actions}.`,
+      ({ t, tone, author }) => `${tone.openers} existe uma forma de ${t.nouns} que só aparece depois de ${t.actions}; antes disso, tudo é discurso bonito tentando fugir do real.`,
+      ({ t, tone, author }) => `${tone.openers} quem encara ${t.tensions} sem fantasia descobre que ${t.nouns} ${tone.bridges} ${t.verbs}, ${author.flavor}.`,
+      ({ t, tone, author }) => `${tone.openers} ${t.nouns} é menos sobre vencer o mundo e mais sobre ${t.actions}; o resto costuma ser vaidade narrada em voz alta.`
+    ];
+
+    const state = {
+      count: Number(localStorage.getItem("philo_count") || "1"),
+      current: {}
+    };
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function selectedOrRandom(selectId, object) {
+      const value = $(selectId).value;
+      if (value !== "aleatorio") return value;
+      const keys = Object.keys(object);
+      return pick(keys);
+    }
+
+    function inferThemeFromContext(context) {
+      const text = context
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+      if (!text.trim()) return null;
+
+      const map = {
+        medo: ["medo", "ansiedade", "inseguranca", "receio", "travado", "paralisado", "preocupacao", "angustia"],
+        mudanca: ["mudanca", "mudar", "recomeco", "recomeçar", "ciclo", "fase nova", "transicao", "encerrando", "virada", "despedida"],
+        amor: ["amor", "relacionamento", "saudade", "encontro", "termino", "afeto", "casal", "paixao", "vinculo"],
+        proposito: ["trabalho", "carreira", "proposito", "sentido", "projeto", "futuro", "missao", "vocacao", "direcao"],
+        liberdade: ["liberdade", "prisao", "preso", "escolha", "autonomia", "independencia", "decidir", "controle"],
+        tempo: ["tempo", "idade", "passado", "futuro", "atrasado", "urgencia", "pressa", "memoria", "calendario"],
+        solidao: ["solidao", "sozinho", "silencio", "isolado", "vazio", "recolhimento", "distancia"],
+        curiosidade: ["aprender", "duvida", "curiosidade", "estudo", "descobrir", "pergunta", "conhecimento"],
+        ciencia: ["ciencia", "evidencia", "dados", "metodo", "experimento", "hipotese", "analise", "padrao"],
+        arte: ["arte", "beleza", "criacao", "imagem", "poesia", "quadro", "musica", "estetica"]
+      };
+
+      let bestTheme = null;
+      let bestScore = 0;
+
+      for (const [theme, words] of Object.entries(map)) {
+        const score = words.reduce((total, word) => {
+          const pattern = new RegExp(`\\b${word}\\b`, "gi");
+          const matches = text.match(pattern);
+          return total + (matches ? matches.length : 0);
+        }, 0);
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestTheme = theme;
+        }
+      }
+
+      return bestScore > 0 ? bestTheme : null;
+    }
+
+    function contextualLine(context, themeKey) {
+      const text = context.trim();
+      if (!text) return "";
+
+      const lines = {
+        medo: [
+          "Quando o medo aparece, a primeira tarefa é separar perigo real de imaginação convincente.",
+          "O medo não precisa desaparecer para que um passo honesto seja possível."
+        ],
+        mudanca: [
+          "Toda mudança séria começa com uma pequena desobediência à versão antiga de si.",
+          "Encerrar um ciclo não é apagar o passado; é impedir que ele continue governando."
+        ],
+        amor: [
+          "O afeto fica mais lúcido quando deixa de pedir ao outro que resolva tudo que falta em nós.",
+          "Amar também exige distinguir cuidado de apego, presença de controle."
+        ],
+        proposito: [
+          "Propósito não é uma frase bonita: é uma direção que continua fazendo sentido na rotina.",
+          "Quando tudo parece urgente, vale perguntar o que ainda importaria sem plateia."
+        ],
+        liberdade: [
+          "A liberdade começa quando a escolha deixa de ser só reação ao medo dos outros.",
+          "Autonomia é sustentar uma decisão sem precisar transformar tudo em explicação."
+        ],
+        tempo: [
+          "O tempo não pede licença; por isso, atenção talvez seja uma forma silenciosa de respeito.",
+          "Nem todo atraso é fracasso. Às vezes é maturação sem testemunha."
+        ],
+        solidao: [
+          "A solidão pode ser vazio, mas também pode ser o lugar onde a própria voz reaparece.",
+          "Nem toda ausência é abandono; algumas são espaço para reorganizar a alma."
+        ],
+        curiosidade: [
+          "A curiosidade devolve movimento àquilo que a certeza tinha congelado.",
+          "Uma boa pergunta costuma ser mais libertadora do que uma resposta apressada."
+        ],
+        ciencia: [
+          "Antes de concluir, observe o padrão; antes de reagir, teste a hipótese.",
+          "Clareza também é método: menos certeza teatral, mais evidência."
+        ],
+        arte: [
+          "A arte não resolve a vida, mas amplia o campo onde a vida pode ser sentida.",
+          "Às vezes uma imagem entende antes que o pensamento consiga explicar."
+        ]
+      };
+
+      return pick(lines[themeKey] || [
+        "O que você descreveu talvez peça menos pressa e mais precisão interior.",
+        "Esse contexto não precisa virar resposta imediata; pode virar observação honesta."
+      ]);
+    }
+
+    function choicePack() {
+      const context = $("context").value.trim();
+      const explicitTheme = $("theme").value;
+      const inferredTheme = explicitTheme === "aleatorio" ? inferThemeFromContext(context) : null;
+
+      const themeKey = inferredTheme || selectedOrRandom("theme", data.themes);
+      const toneKey = selectedOrRandom("tone", data.tones);
+      const authorKey = selectedOrRandom("author", data.authors);
+
+      return {
+        themeKey,
+        toneKey,
+        authorKey,
+        inferredTheme,
+        context,
+        theme: data.themes[themeKey],
+        tone: data.tones[toneKey],
+        author: data.authors[authorKey]
+      };
+    }
+
+    function resolvePack(pack) {
+      return {
+        t: {
+          nouns: pick(pack.theme.nouns),
+          tensions: pick(pack.theme.tensions),
+          images: pick(pack.theme.images),
+          verbs: pick(pack.theme.verbs),
+          actions: pick(pack.theme.actions)
+        },
+        tone: {
+          openers: pick(pack.tone.openers),
+          bridges: pick(pack.tone.bridges),
+          endings: pick(pack.tone.endings)
+        },
+        author: {
+          flavor: pick(pack.author.flavor),
+          questions: pick(pack.author.questions)
+        }
+      };
+    }
+
+    function polish(sentence) {
+      return sentence
+        .replace(/\s+/g, " ")
+        .replace(" ,", ",")
+        .replace(" ;", ";")
+        .replace(" .", ".")
+        .replace(/(^\w|[.!?]\s+\w)/g, match => match.toUpperCase())
+        .trim();
+    }
+
+    function simpleHash(text) {
+      let hash = 0;
+      for (let i = 0; i < text.length; i++) {
+        hash = ((hash << 5) - hash) + text.charCodeAt(i);
+        hash |= 0;
+      }
+      return String(hash);
+    }
+
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem("philo_history") || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveHistory(hash) {
+      const history = getHistory().filter(item => item !== hash);
+      history.unshift(hash);
+      localStorage.setItem("philo_history", JSON.stringify(history.slice(0, 45)));
+    }
+
+    function withContext(text, pack) {
+      if (!pack.context) return text;
+
+      const bridge = pack.inferredTheme
+        ? `Seu contexto puxou o tema para ${labels.temas[pack.themeKey]}.`
+        : "O contexto pessoal acrescentou uma camada à leitura.";
+
+      return `${text} ${bridge} ${contextualLine(pack.context, pack.themeKey)}`;
+    }
+
+    function buildThought() {
+      let result = null;
+
+      for (let attempt = 0; attempt < 90; attempt++) {
+        const pack = choicePack();
+        const resolved = resolvePack(pack);
+        const template = pick(templates);
+        const quote = polish(template(resolved));
+        const after = withContext(`${pick(data.reflectionOpeners)} ${pick(data.closers)}`, pack);
+        const intensity = $("intensity").value;
+
+        let question = resolved.author.questions;
+        if (pack.context) {
+          question = `${question} Olhando para o que você escreveu, qual é o menor gesto real que mudaria alguma coisa?`;
+        }
+
+        if (intensity === "alta") {
+          question = `${question} E o que você perderia se finalmente parasse de defender a desculpa mais confortável?`;
+        } else if (intensity === "suave") {
+          question = `${question}`;
+        } else {
+          question = `${question} O que mudaria se você respondesse com honestidade hoje?`;
+        }
+
+        const full = `${quote}|${after}|${question}|${pack.themeKey}|${pack.toneKey}|${pack.authorKey}`;
+        const hash = simpleHash(full);
+        const recent = getHistory();
+
+        result = {
+          quote,
+          after,
+          question,
+          hash,
+          themeKey: pack.themeKey,
+          toneKey: pack.toneKey,
+          authorKey: pack.authorKey
+        };
+
+        if (!recent.includes(hash)) break;
+      }
+
+      saveHistory(result.hash);
+      return result;
+    }
+
+    function render(result) {
+      state.current = result;
+      state.count += 1;
+      localStorage.setItem("philo_count", String(state.count));
+
+      $("themeTag").textContent = labels.temas[result.themeKey];
+      $("toneTag").textContent = labels.tons[result.toneKey];
+      $("authorTag").textContent = labels.autores[result.authorKey];
+
+      const stage = $("quoteStage");
+      stage.classList.remove("fade");
+      void stage.offsetWidth;
+      stage.classList.add("fade");
+
+      $("quoteText").textContent = result.quote;
+      $("afterText").textContent = result.after;
+      $("questionText").textContent = result.question;
+      $("counterText").textContent = String(state.count);
+    }
+
+    function currentText() {
+      const tags = [
+        labels.temas[state.current.themeKey] || $("themeTag").textContent,
+        labels.tons[state.current.toneKey] || $("toneTag").textContent,
+        labels.autores[state.current.authorKey] || $("authorTag").textContent
+      ].join(" · ");
+
+      return `${$("quoteText").textContent}\n\n${$("afterText").textContent}\n\nPergunta:\n${$("questionText").textContent}\n\n${tags}\nGerador Filosófico · Ricardo Zibordi`;
+    }
+
+    function toast(message) {
+      const el = $("toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    async function copyCurrent() {
+      try {
+        await navigator.clipboard.writeText(currentText());
+        toast("Pensamento copiado.");
+      } catch {
+        toast("Não foi possível copiar automaticamente.");
+      }
+    }
+
+    async function shareCurrent() {
+      const text = currentText();
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: "Gerador Filosófico", text });
+          return;
+        } catch {
+          return;
+        }
+      }
+      await copyCurrent();
+      toast("Compartilhamento indisponível. Texto copiado.");
+    }
+
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem("philo_favorites") || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFavorite() {
+      const favorites = getFavorites();
+      const item = currentText();
+      if (!favorites.includes(item)) {
+        favorites.unshift(item);
+        localStorage.setItem("philo_favorites", JSON.stringify(favorites.slice(0, 12)));
+        renderFavorites();
+        toast("Favorita salva neste aparelho.");
+      } else {
+        toast("Esta frase já está nas favoritas.");
+      }
+    }
+
+    function renderFavorites() {
+      const list = $("favoritesList");
+      const favorites = getFavorites();
+      list.innerHTML = "";
+
+      if (!favorites.length) {
+        const empty = document.createElement("p");
+        empty.textContent = "Nenhuma favorita salva ainda.";
+        empty.style.color = "var(--soft)";
+        list.appendChild(empty);
+        return;
+      }
+
+      favorites.forEach((favorite) => {
+        const card = document.createElement("div");
+        card.className = "favorite-card";
+        card.textContent = favorite.split("\n\n")[0];
+        list.appendChild(card);
+      });
+    }
+
+    function clearFavorites() {
+      localStorage.removeItem("philo_favorites");
+      renderFavorites();
+      toast("Favoritas apagadas.");
+    }
+
+    function clearHistory() {
+      localStorage.removeItem("philo_history");
+      toast("Histórico de repetição apagado.");
+    }
+
+    function hydrateFromUrl() {
+      const params = new URLSearchParams(location.search);
+      ["theme", "tone", "author", "intensity"].forEach(id => {
+        if (params.has(id) && $(id)) $(id).value = params.get(id);
+      });
+    }
+
+    function updateUrl() {
+      const params = new URLSearchParams();
+      ["theme", "tone", "author", "intensity"].forEach(id => params.set(id, $(id).value));
+      const url = `${location.pathname}?${params.toString()}`;
+      history.replaceState(null, "", url);
+    }
+
+    $("generateBtn").addEventListener("click", () => {
+      updateUrl();
+      render(buildThought());
+    });
+
+    $("copyBtn").addEventListener("click", copyCurrent);
+    $("shareBtn").addEventListener("click", shareCurrent);
+    $("saveBtn").addEventListener("click", saveFavorite);
+    $("clearFavoritesBtn").addEventListener("click", clearFavorites);
+    $("clearHistoryBtn").addEventListener("click", clearHistory);
+
+    ["theme", "tone", "author", "intensity"].forEach(id => {
+      $(id).addEventListener("change", updateUrl);
+    });
+
+    hydrateFromUrl();
+    renderFavorites();
+
+    state.current = {
+      quote: $("quoteText").textContent,
+      after: $("afterText").textContent,
+      question: $("questionText").textContent,
+      themeKey: "liberdade",
+      toneKey: "existencial",
+      authorKey: "camus"
+    };
+  </script>
+</body>
+</html>
