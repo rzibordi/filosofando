@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#090b18" />
-  <title>Gerador Filosófico</title>
+  <title>Gerador Frases Filosóficas</title>
   <meta name="author" content="Ricardo Zibordi" />
   <style>
     :root {
@@ -466,10 +466,10 @@
 <body>
   <main class="app">
     <header>
-      <div class="eyebrow"><span class="orb"></span> Olá, que bom que está aqui. </div>
+      <div class="eyebrow"><span class="orb"></span> Gerador filosófico</div>
       <h1>Frases para pensar antes de obedecer ao mundo.</h1>
       <p class="lead">
-        Escolha um tema ou um contexto. O resto nasce do acaso, da linguagem e da inquietação.
+        Escolha um tema ou escreva um contexto. O resto nasce do acaso, da linguagem e da inquietação.
       </p>
     </header>
 
@@ -578,7 +578,7 @@
 
     <section class="drawer">
       <details>
-        <summary>Favoritas salvas neste aparelho</summary>
+        <summary>Favoritas</summary>
         <div class="details-content">
           <div class="favorites" id="favoritesList"></div>
           <div class="buttons">
@@ -587,14 +587,7 @@
           </div>
         </div>
       </details>
-
-      <details>
-        <summary>Publicar</summary>
-        <div class="details-content">
-          Salve como <strong>index.html</strong> e publique no GitHub Pages, Netlify ou Vercel.
-        </div>
-      </details>
-    </section>
+</section>
   </main>
 
   <div class="toast" id="toast"></div>
@@ -727,35 +720,35 @@
       authors: {
         camus: {
           flavor: ["contra o absurdo", "sem pedir ao Universo uma justificativa", "com uma dignidade que nasce apesar do vazio", "como quem empurra sua pedra e ainda observa o céu"],
-          questions: ["Que sentido você consegue construir sem exigir que o mundo concorde?", "Qual pedra você empurra todos os dias fingindo que ela não ensina nada?", "O que ainda merece sua presença, mesmo sem garantia de vitória?"]
+          questions: ["Que absurdo você abraça hoje?", "Qual pedra ainda ensina?", "O que merece sua presença?"]
         },
         kant: {
           flavor: ["como se sua escolha pudesse virar lei", "sem confundir desejo com liberdade", "com a coragem de agir por princípio, não por conveniência", "sob a luz austera da responsabilidade"],
-          questions: ["Você aceitaria viver em um mundo onde todos agissem como você está prestes a agir?", "Sua escolha nasce da razão ou apenas de uma vontade bem vestida?", "Que princípio você está protegendo quando ninguém está olhando?"]
+          questions: ["Isso viraria lei?", "Desejo ou princípio?", "Quem você é sem testemunha?"]
         },
         schopenhauer: {
           flavor: ["atravessando o teatro da vontade", "sem obedecer a todo desejo que passa", "como quem desconfia da própria fome de querer", "percebendo que nem todo impulso merece trono"],
-          questions: ["Esse desejo é seu ou apenas a vontade usando sua voz?", "O que sobraria de você se a necessidade de querer descansasse por uma tarde?", "Você está escolhendo ou apenas sendo puxado por uma falta antiga?"]
+          questions: ["É vontade ou escolha?", "Quem manda no seu desejo?", "O que sobra sem querer?"]
         },
         nietzsche: {
           flavor: ["como quem cria valor em vez de herdá-lo", "com martelo suficiente para testar ídolos", "sem pedir licença ao rebanho", "transformando queda em matéria-prima"],
-          questions: ["Que valor você teria coragem de criar se parasse de pedir autorização?", "Qual ídolo pessoal precisa ser quebrado para que você respire melhor?", "Você está vivendo ou apenas preservando uma versão domesticada de si?"]
+          questions: ["Qual ídolo cai hoje?", "Que valor você criaria?", "Onde está seu martelo?"]
         },
         sartre: {
           flavor: ["sob o peso inevitável da escolha", "sem transformar os outros em desculpa", "com a angústia limpa de quem sabe que decide", "aceitando que fugir também é escolher"],
-          questions: ["Que escolha você está evitando ao chamar tudo de circunstância?", "Onde você está terceirizando sua liberdade?", "Quem você culpa para não encarar a autoria da própria vida?"]
+          questions: ["Qual escolha você evita?", "Quem virou sua desculpa?", "Onde você fugiu de si?"]
         },
         estoicos: {
           flavor: ["separando domínio interno e teatro externo", "com disciplina suficiente para não obedecer ao caos", "sem entregar a paz ao primeiro acontecimento", "como quem sabe que caráter é prática diária"],
-          questions: ["O que está sob seu controle agora, sem drama e sem fantasia?", "Que reação sua precisa perder o cargo de comandante?", "Qual hábito pequeno provaria hoje que você ainda governa algo?"]
+          questions: ["O que é seu agora?", "Qual reação perde o trono?", "Onde começa sua paz?"]
         },
         cientista: {
           flavor: ["tratando a própria vida como hipótese em teste", "com humildade diante dos dados", "sem transformar opinião em templo", "observando padrões antes de inventar explicações"],
-          questions: ["Que evidência mudaria sua opinião sobre si mesmo?", "Qual padrão você repete e ainda chama de acaso?", "Você está buscando verdade ou apenas confirmação elegante?"]
+          questions: ["Que dado você ignora?", "Qual padrão se repete?", "Hipótese ou vaidade?"]
         },
         essencialista: {
           flavor: ["retirando o excesso até sobrar direção", "com profundidade sem espetáculo", "fazendo menos para existir melhor", "trocando dispersão por presença"],
-          questions: ["O que você removeria da sua vida se não precisasse impressionar ninguém?", "Qual excesso está roubando profundidade?", "O que merece sua energia quando o barulho perde importância?"]
+          questions: ["O que merece ficar?", "Que excesso mente bem?", "Menos de quê?"]
         }
       },
 
@@ -1006,15 +999,15 @@
 
         let question = resolved.author.questions;
         if (pack.context) {
-          question = `${question} Olhando para o que você escreveu, qual é o menor gesto real que mudaria alguma coisa?`;
+          question = `${question} Qual gesto mínimo muda tudo?`;
         }
 
         if (intensity === "alta") {
-          question = `${question} E o que você perderia se finalmente parasse de defender a desculpa mais confortável?`;
+          question = `${question} Que desculpa cai hoje?`;
         } else if (intensity === "suave") {
           question = `${question}`;
         } else {
-          question = `${question} O que mudaria se você respondesse com honestidade hoje?`;
+          question = `${question} O que fica se você for honesto?`;
         }
 
         const full = `${quote}|${after}|${question}|${pack.themeKey}|${pack.toneKey}|${pack.authorKey}`;
